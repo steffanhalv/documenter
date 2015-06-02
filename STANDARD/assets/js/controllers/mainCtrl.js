@@ -9,16 +9,51 @@ function ($rootScope, $scope, $state, $translate, $localStorage, $window, $docum
     // -----------------------------------
     var $win = $($window);
 
+    $scope.filetree = [];
+
     gapi.authorize({
         done: function(authResult) {
             console.log(authResult);
+            gapi.getUser({
+                done: function(resp) {
+                    console.log(resp.user);
+                    $rootScope.$apply(function(){
+                        $rootScope.user.picture = resp.user.picture.url;
+                        $rootScope.user.name = resp.user.displayName;
+                    });
+                }
+            });
             gapi.listRoot({
                 done: function(resp) {
-                   console.log(resp);
+                    $scope.$apply(function() {
+                        $scope.filetree = resp.items;
+
+                        $.each($scope.filetree, function() {
+                            if (this.mimeType == 'application/vnd.google-apps.folder') {
+                                expand(this);
+                            }
+                        });
+
+                        console.log($scope.filetree);
+                    });
                 }
             });
         }
     });
+
+    var expand = function(folder) {
+        gapi.listFolder({
+            id: folder.id,
+            done: function(resp) {
+                folder.contains = resp.items;
+                $.each(folder.contains, function() {
+                    if (this.mimeType == 'application/vnd.google-apps.folder') {
+                        expand(this);
+                    }
+                });
+            }
+        });
+    };
 
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
         //start loading bar on stateChangeStart

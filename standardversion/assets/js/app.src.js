@@ -53581,7 +53581,7 @@ function ($rootScope, $state, $stateParams) {
             isSidebarClosed: false, // true if you want to initialize the template with closed sidebar
             isFooterFixed: true, // true if you want to initialize the template with fixed footer
             theme: 'theme-3', // indicate the theme chosen for your project
-            logo: 'assets/images/logo.png', // relative path of the project logo
+            logo: 'assets/images/logo.png' // relative path of the project logo
         }
     };
     $rootScope.user = {
@@ -55691,12 +55691,28 @@ app
 /**
  * Clip-Two Main Controller
  */
-app.controller('AppCtrl', ['$rootScope', '$scope', '$state', '$translate', '$localStorage', '$window', '$document', '$timeout', 'cfpLoadingBar',
-function ($rootScope, $scope, $state, $translate, $localStorage, $window, $document, $timeout, cfpLoadingBar) {
+app.controller('AppCtrl', ['$rootScope', '$scope', '$state', '$translate', '$localStorage', '$window', '$document', '$timeout', 'cfpLoadingBar', 'gapi',
+function ($rootScope, $scope, $state, $translate, $localStorage, $window, $document, $timeout, cfpLoadingBar, gapi) {
 
     // Loading bar transition
     // -----------------------------------
     var $win = $($window);
+
+    $scope.filetree = [];
+
+    gapi.authorize({
+        done: function(authResult) {
+            console.log(authResult);
+            gapi.listRoot({
+                done: function(resp) {
+                    $scope.$apply(function() {
+                        $scope.filetree = resp.items;
+                        console.log($scope.filetree);
+                    });
+                }
+            });
+        }
+    });
 
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
         //start loading bar on stateChangeStart

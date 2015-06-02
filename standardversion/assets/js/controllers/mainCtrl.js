@@ -2,12 +2,28 @@
 /**
  * Clip-Two Main Controller
  */
-app.controller('AppCtrl', ['$rootScope', '$scope', '$state', '$translate', '$localStorage', '$window', '$document', '$timeout', 'cfpLoadingBar',
-function ($rootScope, $scope, $state, $translate, $localStorage, $window, $document, $timeout, cfpLoadingBar) {
+app.controller('AppCtrl', ['$rootScope', '$scope', '$state', '$translate', '$localStorage', '$window', '$document', '$timeout', 'cfpLoadingBar', 'gapi',
+function ($rootScope, $scope, $state, $translate, $localStorage, $window, $document, $timeout, cfpLoadingBar, gapi) {
 
     // Loading bar transition
     // -----------------------------------
     var $win = $($window);
+
+    $scope.filetree = [];
+
+    gapi.authorize({
+        done: function(authResult) {
+            console.log(authResult);
+            gapi.listRoot({
+                done: function(resp) {
+                    $scope.$apply(function() {
+                        $scope.filetree = resp.items;
+                        console.log($scope.filetree);
+                    });
+                }
+            });
+        }
+    });
 
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
         //start loading bar on stateChangeStart

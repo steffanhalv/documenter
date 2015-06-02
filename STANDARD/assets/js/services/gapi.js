@@ -48,6 +48,44 @@ app.factory('gapi', ['$timeout', function ($timeout) {
 
     };
 
+    factory.listFolder = function(options) {
+
+        if (typeof options.id == "undefined") {
+            options.id = 'root';
+        }
+
+        var request = gapi.client.request({
+            'path': '/drive/v2/files',
+            'method': 'GET',
+            'params': {
+                'maxResults': '200',
+                'q': "'"+options.id+"' in parents and trashed = false"
+            }
+        });
+
+        request.execute(function(resp) {
+            options.done(resp);
+        });
+
+    };
+
+    factory.getUser = function(options) {
+
+        if (typeof options.id == "undefined") {
+            options.id = 'root';
+        }
+
+        var request = gapi.client.request({
+            'path': '/drive/v2/about',
+            'method': 'GET'
+        });
+
+        request.execute(function(resp) {
+            options.done(resp);
+        });
+
+    };
+
     return factory;
 
 }]);
