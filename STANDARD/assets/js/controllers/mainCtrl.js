@@ -9,7 +9,16 @@ function ($rootScope, $scope, $state, $translate, $localStorage, $window, $docum
     // -----------------------------------
     var $win = $($window);
 
-    gapi.init();
+    gapi.authorize({
+        done: function(authResult) {
+            console.log(authResult);
+            gapi.listRoot({
+                done: function(resp) {
+                   console.log(resp);
+                }
+            });
+        }
+    });
 
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
         //start loading bar on stateChangeStart
