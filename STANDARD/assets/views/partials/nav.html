@@ -52,46 +52,7 @@
                     <span>{{item.title}}</span>
                     <i class="icon-arrow" ng-show="item.mimeType == 'application/vnd.google-apps.folder'"></i>
 				</a>
-				<ul class="sub-menu">
-					<li ng-repeat="subitem in item.contains">
-						<a href="#">
-                            <i class="ti-folder" ng-show="subitem.mimeType == 'application/vnd.google-apps.folder'"></i>
-                            <i class="ti-file" ng-hide="subitem.mimeType == 'application/vnd.google-apps.folder'"></i>
-                            <span>{{subitem.title}}</span>
-                            <i class="icon-arrow" ng-show="subitem.mimeType == 'application/vnd.google-apps.folder'"></i>
-						</a>
-                        <ul class="sub-menu">
-                            <li ng-repeat="sub2item in subitem.contains">
-                                <a href="#">
-                                    <i class="ti-folder" ng-show="sub2item.mimeType == 'application/vnd.google-apps.folder'"></i>
-                                    <i class="ti-file" ng-hide="sub2item.mimeType == 'application/vnd.google-apps.folder'"></i>
-                                    <span>{{sub2item.title}}</span>
-                                    <i class="icon-arrow" ng-show="sub2item.mimeType == 'application/vnd.google-apps.folder'"></i>
-                                </a>
-                                <ul class="sub-menu">
-                                    <li ng-repeat="sub3item in sub2item.contains">
-                                        <a href="#">
-                                            <i class="ti-folder" ng-show="sub3item.mimeType == 'application/vnd.google-apps.folder'"></i>
-                                            <i class="ti-file" ng-hide="sub3item.mimeType == 'application/vnd.google-apps.folder'"></i>
-                                            <span>{{sub3item.title}}</span>
-                                            <i class="icon-arrow" ng-show="sub3item.mimeType == 'application/vnd.google-apps.folder'"></i>
-                                        </a>
-                                        <ul class="sub-menu">
-                                            <li ng-repeat="sub4item in sub2item.contains">
-                                                <a href="#">
-                                                    <i class="ti-folder" ng-show="sub4item.mimeType == 'application/vnd.google-apps.folder'"></i>
-                                                    <i class="ti-file" ng-hide="sub4item.mimeType == 'application/vnd.google-apps.folder'"></i>
-                                                    <span>{{sub4item.title}}</span>
-                                                    <i class="icon-arrow" ng-show="sub4item.mimeType == 'application/vnd.google-apps.folder'"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-					</li>
-				</ul>
+				<filetree item="{{item.id}}"></filetree>
 			</li>
 		</ul>
 	</li>
