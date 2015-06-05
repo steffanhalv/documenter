@@ -44,17 +44,7 @@
 				</div>
 			</div>
 		</a>
-		<ul class="sub-menu">
-			<li ng-repeat="item in filetree">
-				<a href="javascript:;">
-                    <i class="ti-folder" ng-show="item.mimeType == 'application/vnd.google-apps.folder'"></i>
-                    <i class="ti-file" ng-hide="item.mimeType == 'application/vnd.google-apps.folder'"></i>
-                    <span>{{item.title}}</span>
-                    <i class="icon-arrow" ng-show="item.mimeType == 'application/vnd.google-apps.folder'"></i>
-				</a>
-				<filetree item="{{item.id}}"></filetree>
-			</li>
-		</ul>
+        <filetree item="root"></filetree>
 	</li>
 </ul>
 <!-- end: MAIN NAVIGATION MENU -->

@@ -31,23 +31,6 @@ app.factory('gapi', ['$timeout', function ($timeout) {
 
     };
 
-    factory.listRoot = function(options) {
-
-        var request = gapi.client.request({
-            'path': '/drive/v2/files',
-            'method': 'GET',
-            'params': {
-                'maxResults': '200',
-                'q': "'root' in parents and trashed = false"
-            }
-        });
-
-        request.execute(function(resp) {
-            options.done(resp);
-        });
-
-    };
-
     factory.listFolder = function(options) {
 
         if (typeof options.id == "undefined") {
@@ -85,6 +68,34 @@ app.factory('gapi', ['$timeout', function ($timeout) {
         });
 
     };
+
+    factory.printFile = function(options) {
+        var request = gapi.client.request({
+            'path': '/drive/v2/files/'+options.id,
+            'method': 'GET'
+        });
+        request.execute(function(resp) {
+            options.done(resp);
+        });
+    }
+
+    factory.downloadFile = function(file, callback) {
+        if (file.downloadUrl) {
+            var accessToken = gapi.auth.getToken().access_token;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', file.downloadUrl);
+            xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+            xhr.onload = function() {
+                callback(xhr.responseText);
+            };
+            xhr.onerror = function() {
+                callback(null);
+            };
+            xhr.send();
+        } else {
+            callback(null);
+        }
+    }
 
     return factory;
 

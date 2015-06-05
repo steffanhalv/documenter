@@ -23,37 +23,8 @@ function ($rootScope, $scope, $state, $translate, $localStorage, $window, $docum
                     });
                 }
             });
-            gapi.listRoot({
-                done: function(resp) {
-                    $scope.$apply(function() {
-                        $scope.filetree = resp.items;
-
-                        $.each($scope.filetree, function() {
-                            if (this.mimeType == 'application/vnd.google-apps.folder') {
-                                expand(this);
-                            }
-                        });
-
-                        console.log($scope.filetree);
-                    });
-                }
-            });
         }
     });
-
-    var expand = function(folder) {
-        gapi.listFolder({
-            id: folder.id,
-            done: function(resp) {
-                folder.contains = resp.items;
-                $.each(folder.contains, function() {
-                    if (this.mimeType == 'application/vnd.google-apps.folder') {
-                        expand(this);
-                    }
-                });
-            }
-        });
-    };
 
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
         //start loading bar on stateChangeStart

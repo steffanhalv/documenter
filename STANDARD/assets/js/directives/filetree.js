@@ -6,18 +6,30 @@ app.directive('filetree', ['$rootScope', '$compile','$timeout', 'gapi', function
     return {
         template:   '<ul class="sub-menu">'+
                     '<li ng-repeat="item in items" mimetype="{{item.mimeType}}" id="{{item.id}}">'+
-                    '<a href="#">'+
+                    '<a href="#" ng-click="getFile(item.id)">'+
                     '<i class="ti-folder" ng-show="item.mimeType == \'application/vnd.google-apps.folder\'"></i>'+
                     '<i class="ti-file" ng-hide="item.mimeType == \'application/vnd.google-apps.folder\'"></i>'+
                     '<span>{{item.title}}</span>'+
                     '<i class="icon-arrow" ng-show="item.mimeType == \'application/vnd.google-apps.folder\'"></i>'+
                     '</a>'+
-                    //'<filetree item="item.id"></filetree>'+
                     '</li>'+
                     '</ul>'
                     ,
         replace: true,
         link: function (scope, elem, attrs) {
+
+            scope.getFile = function(id) {
+              console.log('trying to get file '+id);
+                gapi.printFile({
+                    id: id,
+                    done: function(resp) {
+                        console.log(resp);
+                        gapi.downloadFile(resp, function(file) {
+                            console.log(file);
+                        });
+                    }
+                })
+            };
 
             gapi.listFolder({
                 id: attrs.item,
@@ -31,7 +43,7 @@ app.directive('filetree', ['$rootScope', '$compile','$timeout', 'gapi', function
                                 $(this).append(content[0]);
                             }
                         });
-                    }, 100);
+                    }, 500);
 
                 }
             });
